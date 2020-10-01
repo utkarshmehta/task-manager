@@ -1,4 +1,5 @@
 const express = require("express");
+const { update } = require("../models/users");
 const router = new express.Router();
 const User = require('../models/users')
 
@@ -56,17 +57,18 @@ router.post("/users", async (req, res) => {
     }
   
     try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators: true,
-      }); // new: true returns the user after updation
+      const user = User.findById(req.params.id)
+      console.log(user.name)
+      updates.forEach((update) => user[update] = req.body[update]);
+      await user.save();
+
       if (!user) {
         return res.status(404).send("No User Found!");
       }
-  
-      res.status(200).send(user);
+
+      res.status(200).send(" dfd");
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e)
     }
   });
   //Delete Users

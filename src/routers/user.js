@@ -57,8 +57,7 @@ router.post("/users", async (req, res) => {
     }
   
     try {
-      const user = User.findById(req.params.id)
-      console.log(user.name)
+      const user = await User.findById(req.params.id)
       updates.forEach((update) => user[update] = req.body[update]);
       await user.save();
 
@@ -66,9 +65,9 @@ router.post("/users", async (req, res) => {
         return res.status(404).send("No User Found!");
       }
 
-      res.status(200).send(" dfd");
+      res.status(200).send(user);
     } catch (e) {
-      console.log(e)
+      res.status(500).send(e);
     }
   });
   //Delete Users

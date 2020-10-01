@@ -3,9 +3,9 @@ const Task = require("./models/tasks");
 const User = require("./models/users");
 const express = require("express");
 const { update } = require("./models/tasks");
-const ObjectId = require('mongoose').Types.ObjectId; //TODO - implement error checking for invalid ObjectID
-const userRouter = require('./routers/user')
-const taskRouter = require('./routers/task')
+const ObjectId = require("mongoose").Types.ObjectId; //TODO - implement error checking for invalid ObjectID
+const userRouter = require("./routers/user");
+const taskRouter = require("./routers/task");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,13 +16,13 @@ app.use(taskRouter);
 const bcrypt = require("bcrypt");
 
 const myFunction = async () => {
-  const password = "Red12345"
+  const password = "Red12345";
   const hashedPassword = await bcrypt.hash(password, 8);
   console.log(password);
   console.log(hashedPassword);
   const isMatch = await bcrypt.compare("Red12345", hashedPassword);
   console.log(isMatch);
-}
+};
 myFunction();
 
 app.listen(port, () => {

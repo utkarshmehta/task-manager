@@ -16,9 +16,9 @@ app.use(taskRouter);
 const jwt = require("jsonwebtoken");
 
 const myFunction = async () => {
-  const token = jwt.sign({_id:"abc123"},"secret",{expiresIn:'1 seconds'})
+  const token = jwt.sign({ _id: "abc123" }, "secret", { expiresIn: "7 days" });
   console.log(token);
-  console.log(jwt.verify(token,'secret'))
+  console.log(jwt.verify(token, "secret"));
 };
 myFunction();
 

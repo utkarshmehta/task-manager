@@ -2,6 +2,7 @@ const express = require("express");
 const { update } = require("../models/users");
 const router = new express.Router();
 const User = require("../models/users");
+const auth = require("../middleware/auth");
 
 //Route for creating a new user
 router.post("/users", async (req, res) => {
@@ -9,32 +10,29 @@ router.post("/users", async (req, res) => {
   try {
     await user.save();
     const token = await user.generateAuthToken();
-    res.status(201).send({user, token});
+    res.status(201).send({ user, token });
   } catch (e) {
     res.status(404).send(e);
   }
 });
 
 //login route
-router.post('/users/login', async(req, res) => {
+router.post("/users/login", async (req, res) => {
   try {
-    const user = await User.findByCredentials(req.body.email, req.body.password)
+    const user = await User.findByCredentials(
+      req.body.email,
+      req.body.password
+    );
     const token = await user.generateAuthToken();
-    res.send({user: user, token: token});
-  } catch(e) {
-    res.status(400).send('unable to log in')
+    res.send({ user: user, token: token });
+  } catch (e) {
+    res.status(400).send("unable to log in");
   }
-})
-
+});
 
 //Route for fetching multiple users
-router.get("/users", async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (e) {
-    res.status(500).send(e);
-  }
+router.get("/users/me", auth ,async (req, res) => {
+  res.send(req.user);
 });
 
 //Route to get individula users by ID
